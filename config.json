@@ -1,0 +1,9 @@
+{
+  "targetPath": "C:\\Windows\\notepad.exe",
+  "stopTime": "04:00:00",
+  "startTime": "04:05:00",
+  "manualRestartBufferSeconds": 5,
+  "killEntireProcessTree": true,
+  "autoRecoverOnCrash": true,
+  "autoStartDaemon": false
+}
