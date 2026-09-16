@@ -2,7 +2,7 @@
 bin/
 obj/
 publish/
-
+tools/
 # Visual Studio / IDE cache
 .vs/
 .idea/

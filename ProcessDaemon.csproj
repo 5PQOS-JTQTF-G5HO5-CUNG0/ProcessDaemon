@@ -12,12 +12,13 @@
     <ApplicationIcon>app.ico</ApplicationIcon>
     <RootNamespace>ProcessDaemon</RootNamespace>
     <AssemblyName>ProcessDaemon</AssemblyName>
+    <DefaultItemExcludes>$(DefaultItemExcludes);tools/**;publish/**</DefaultItemExcludes>
 
     <!-- 单文件与优化发布配置 -->
     <PublishSingleFile Condition="'$(Configuration)' == 'Release'">true</PublishSingleFile>
     <SelfContained Condition="'$(Configuration)' == 'Release'">false</SelfContained>
     <IncludeNativeLibrariesForSelfExtract>true</IncludeNativeLibrariesForSelfExtract>
-    <EnableCompressionInSingleFile>true</EnableCompressionInSingleFile>
+    <EnableCompressionInSingleFile Condition="'$(SelfContained)' == 'true'">true</EnableCompressionInSingleFile>
   </PropertyGroup>
 
   <ItemGroup>
