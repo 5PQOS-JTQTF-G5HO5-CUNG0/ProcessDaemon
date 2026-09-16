@@ -1,4 +1,5 @@
 using System.Diagnostics;
+using ProcessDaemon.Licensing;
 using ProcessDaemon.Models;
 using ProcessDaemon.Services;
 
@@ -34,6 +35,9 @@ public partial class MainForm : Form
 
         // 初始化界面数值
         LoadConfigToUi();
+
+        // 刷新授权状态
+        UpdateLicenseDisplay();
 
         // 时钟更新
         uiClockTimer.Tick += (s, e) =>
@@ -106,6 +110,7 @@ public partial class MainForm : Form
         // 托盘菜单
         menuShow.Click += (s, e) => RestoreWindow();
         menuRestart.Click += async (s, e) => await _daemon.ManualRestartAsync();
+        menuLicense.Click += (s, e) => ShowActivationModal();
         menuExit.Click += (s, e) =>
         {
             _isExplicitExit = true;
@@ -115,8 +120,33 @@ public partial class MainForm : Form
         // 托盘双击
         notifyIcon.DoubleClick += (s, e) => RestoreWindow();
 
+        // 顶部授权标签单击打开激活界面
+        lblLicenseStatus.Click += (s, e) => ShowActivationModal();
+
         // 窗口拦截关闭 -> 驻留托盘
         this.FormClosing += MainForm_FormClosing;
+    }
+
+    private void ShowActivationModal()
+    {
+        using var actForm = new ActivationForm(isStartupModal: false);
+        actForm.ShowDialog(this);
+        UpdateLicenseDisplay();
+    }
+
+    private void UpdateLicenseDisplay()
+    {
+        var result = LicenseManager.ValidateLicense();
+        if (result.IsValid)
+        {
+            lblLicenseStatus.ForeColor = Color.FromArgb(16, 185, 129);
+            lblLicenseStatus.Text = result.IsPermanent ? "🔑 永久商业授权" : $"🔑 授权余 {result.DaysRemaining} 天";
+        }
+        else
+        {
+            lblLicenseStatus.ForeColor = Color.FromArgb(220, 38, 38);
+            lblLicenseStatus.Text = "🔑 未激活/已过期";
+        }
     }
 
     private void LoadConfigToUi()
@@ -190,6 +220,16 @@ public partial class MainForm : Form
 
     private void StartDaemonInternal()
     {
+        // 守护前进行授权有效性复核
+        var licenseCheck = LicenseManager.ValidateLicense();
+        if (!licenseCheck.IsValid)
+        {
+            AppendLog($"[授权拦截] 软件未激活或授权已过期 ({licenseCheck.Message})，无法启动守护！", "ERROR");
+            UpdateLicenseDisplay();
+            ShowActivationModal();
+            return;
+        }
+
         _daemon.StartDaemon();
         btnToggleDaemon.Text = "停止守护";
         btnToggleDaemon.BackColor = Color.FromArgb(255, 235, 235);

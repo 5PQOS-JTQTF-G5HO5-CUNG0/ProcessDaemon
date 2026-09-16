@@ -1,6 +1,7 @@
 using System.Diagnostics;
 using System.Runtime.InteropServices;
 using ProcessDaemon.Forms;
+using ProcessDaemon.Licensing;
 
 namespace ProcessDaemon;
 
@@ -63,6 +64,18 @@ internal static class Program
             Application.SetHighDpiMode(HighDpiMode.PerMonitorV2);
         }
         catch { }
+
+        // 软件离线授权校验拦截
+        var licenseValidation = LicenseManager.ValidateLicense();
+        if (!licenseValidation.IsValid)
+        {
+            using var activationForm = new ActivationForm(isStartupModal: true, initialStatus: licenseValidation);
+            if (activationForm.ShowDialog() != DialogResult.OK)
+            {
+                // 用户未完成激活或关闭了激活窗口，直接终止运行
+                return;
+            }
+        }
 
         Application.Run(new MainForm());
     }

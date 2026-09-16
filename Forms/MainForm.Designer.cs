@@ -7,6 +7,7 @@ partial class MainForm
     private System.Windows.Forms.ContextMenuStrip trayMenu;
     private System.Windows.Forms.ToolStripMenuItem menuShow;
     private System.Windows.Forms.ToolStripMenuItem menuRestart;
+    private System.Windows.Forms.ToolStripMenuItem menuLicense;
     private System.Windows.Forms.ToolStripSeparator menuSep;
     private System.Windows.Forms.ToolStripMenuItem menuExit;
 
@@ -14,6 +15,7 @@ partial class MainForm
     private System.Windows.Forms.Label lblStatusBadge;
     private System.Windows.Forms.Label lblStatusText;
     private System.Windows.Forms.Label lblPid;
+    private System.Windows.Forms.Label lblLicenseStatus;
     private System.Windows.Forms.Label lblClock;
 
     private System.Windows.Forms.GroupBox grpConfig;
@@ -62,11 +64,13 @@ partial class MainForm
         this.trayMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
         this.menuShow = new System.Windows.Forms.ToolStripMenuItem("显示主界面");
         this.menuRestart = new System.Windows.Forms.ToolStripMenuItem("手动立即重启");
+        this.menuLicense = new System.Windows.Forms.ToolStripMenuItem("🔑 软件授权与激活...");
         this.menuSep = new System.Windows.Forms.ToolStripSeparator();
         this.menuExit = new System.Windows.Forms.ToolStripMenuItem("退出守护器");
         this.trayMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.menuShow,
             this.menuRestart,
+            this.menuLicense,
             this.menuSep,
             this.menuExit
         });
@@ -82,6 +86,7 @@ partial class MainForm
         this.lblStatusBadge = new System.Windows.Forms.Label();
         this.lblStatusText = new System.Windows.Forms.Label();
         this.lblPid = new System.Windows.Forms.Label();
+        this.lblLicenseStatus = new System.Windows.Forms.Label();
         this.lblClock = new System.Windows.Forms.Label();
 
         this.pnlStatus.SuspendLayout();
@@ -107,16 +112,27 @@ partial class MainForm
 
         this.lblClock.AutoSize = false;
         this.lblClock.Dock = System.Windows.Forms.DockStyle.Right;
-        this.lblClock.Width = 130;
+        this.lblClock.Width = 120;
         this.lblClock.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
         this.lblClock.Font = new System.Drawing.Font("Consolas", 12F, System.Drawing.FontStyle.Bold);
         this.lblClock.ForeColor = System.Drawing.Color.FromArgb(40, 40, 40);
         this.lblClock.Padding = new System.Windows.Forms.Padding(0, 0, 16, 0);
         this.lblClock.Text = "00:00:00";
 
+        this.lblLicenseStatus.AutoSize = false;
+        this.lblLicenseStatus.Dock = System.Windows.Forms.DockStyle.Right;
+        this.lblLicenseStatus.Width = 180;
+        this.lblLicenseStatus.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+        this.lblLicenseStatus.Font = new System.Drawing.Font("Microsoft YaHei UI", 9F, System.Drawing.FontStyle.Regular);
+        this.lblLicenseStatus.ForeColor = System.Drawing.Color.FromArgb(37, 99, 235);
+        this.lblLicenseStatus.Cursor = System.Windows.Forms.Cursors.Hand;
+        this.lblLicenseStatus.Padding = new System.Windows.Forms.Padding(0, 0, 12, 0);
+        this.lblLicenseStatus.Text = "🔑 授权信息";
+
         this.pnlStatus.Controls.Add(this.lblStatusBadge);
         this.pnlStatus.Controls.Add(this.lblStatusText);
         this.pnlStatus.Controls.Add(this.lblPid);
+        this.pnlStatus.Controls.Add(this.lblLicenseStatus);
         this.pnlStatus.Controls.Add(this.lblClock);
 
         // 配置区 GroupBox
