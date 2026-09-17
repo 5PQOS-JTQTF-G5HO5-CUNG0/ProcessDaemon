@@ -84,13 +84,13 @@ public partial class MainForm : Form
                 if (remaining > 0)
                 {
                     btnManualRestart.Enabled = false;
-                    btnManualRestart.Text = $"重启中({remaining}s)...";
-                    lblStatusText.Text = $"正在安全缓冲倒计时: {remaining} 秒";
+                    btnManualRestart.Text = $"重启中 ({remaining}s)";
+                    lblStatusText.Text = $"安全缓冲倒计时: {remaining} 秒";
                 }
                 else
                 {
                     btnManualRestart.Enabled = true;
-                    btnManualRestart.Text = "手动立即重启";
+                    btnManualRestart.Text = "立即重启";
                 }
             });
         };
@@ -139,13 +139,13 @@ public partial class MainForm : Form
         var result = LicenseManager.ValidateLicense();
         if (result.IsValid)
         {
-            lblLicenseStatus.ForeColor = Color.FromArgb(16, 185, 129);
-            lblLicenseStatus.Text = result.IsPermanent ? "🔑 永久商业授权" : $"🔑 授权余 {result.DaysRemaining} 天";
+            lblLicenseStatus.ForeColor = Color.FromArgb(52, 211, 153); // Emerald 400
+            lblLicenseStatus.Text = result.IsPermanent ? "商业授权 (永久)" : $"商业授权 (余 {result.DaysRemaining} 天)";
         }
         else
         {
-            lblLicenseStatus.ForeColor = Color.FromArgb(220, 38, 38);
-            lblLicenseStatus.Text = "🔑 未激活/已过期";
+            lblLicenseStatus.ForeColor = Color.FromArgb(248, 113, 113); // Rose 400
+            lblLicenseStatus.Text = "软件未激活";
         }
     }
 
@@ -214,7 +214,8 @@ public partial class MainForm : Form
         {
             _daemon.StopDaemon();
             btnToggleDaemon.Text = "启动守护";
-            btnToggleDaemon.BackColor = Color.FromArgb(235, 255, 235);
+            btnToggleDaemon.BackColor = Color.FromArgb(15, 23, 42); // Slate 900 Modern Minimal CTA
+            btnToggleDaemon.ForeColor = Color.White;
         }
     }
 
@@ -232,7 +233,8 @@ public partial class MainForm : Form
 
         _daemon.StartDaemon();
         btnToggleDaemon.Text = "停止守护";
-        btnToggleDaemon.BackColor = Color.FromArgb(255, 235, 235);
+        btnToggleDaemon.BackColor = Color.FromArgb(220, 38, 38); // Red 600
+        btnToggleDaemon.ForeColor = Color.White;
     }
 
     private void UpdateStatusBadge(DaemonStatus status, string detail)
@@ -242,25 +244,29 @@ public partial class MainForm : Form
         switch (status)
         {
             case DaemonStatus.Running:
-                lblStatusBadge.BackColor = Color.FromArgb(40, 167, 69); // 绿色
+                lblStatusBadge.BackColor = Color.FromArgb(22, 163, 74); // Emerald 600
                 btnToggleDaemon.Text = "停止守护";
-                btnToggleDaemon.BackColor = Color.FromArgb(255, 235, 235);
+                btnToggleDaemon.BackColor = Color.FromArgb(220, 38, 38); // Red 600
+                btnToggleDaemon.ForeColor = Color.White;
                 break;
             case DaemonStatus.WaitingStart:
-                lblStatusBadge.BackColor = Color.FromArgb(255, 193, 7); // 黄色
+                lblStatusBadge.BackColor = Color.FromArgb(217, 119, 6); // Amber 600
                 btnToggleDaemon.Text = "停止守护";
-                btnToggleDaemon.BackColor = Color.FromArgb(255, 235, 235);
+                btnToggleDaemon.BackColor = Color.FromArgb(220, 38, 38);
+                btnToggleDaemon.ForeColor = Color.White;
                 break;
             case DaemonStatus.Restarting:
-                lblStatusBadge.BackColor = Color.FromArgb(23, 162, 184); // 青色
+                lblStatusBadge.BackColor = Color.FromArgb(2, 132, 199); // Sky 600
                 btnToggleDaemon.Text = "停止守护";
-                btnToggleDaemon.BackColor = Color.FromArgb(255, 235, 235);
+                btnToggleDaemon.BackColor = Color.FromArgb(220, 38, 38);
+                btnToggleDaemon.ForeColor = Color.White;
                 break;
             case DaemonStatus.Stopped:
             default:
-                lblStatusBadge.BackColor = Color.Gray;
+                lblStatusBadge.BackColor = Color.FromArgb(148, 163, 184); // Slate 400
                 btnToggleDaemon.Text = "启动守护";
-                btnToggleDaemon.BackColor = Color.FromArgb(235, 255, 235);
+                btnToggleDaemon.BackColor = Color.FromArgb(15, 23, 42); // Slate 900
+                btnToggleDaemon.ForeColor = Color.White;
                 break;
         }
 
